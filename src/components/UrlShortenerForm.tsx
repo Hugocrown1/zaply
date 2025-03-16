@@ -4,35 +4,25 @@ import { Input } from "./ui/input";
 import { validateUrl } from "@/utils/validateUrl";
 import { createShortUrl } from "@/server/actions/createShortUrl";
 
-import { useFormStatus } from "react-dom";
 import { ShortUrlData } from "@/interfaces/ShortUrlData";
+import { useState } from "react";
 
 interface UrlShortenerFormProps {
   onNewShortUrl: (urlData: ShortUrlData) => void;
 }
-
-const SubmitForm = () => {
-  const status = useFormStatus();
-
-  return (
-    <Button
-      isLoading={status.pending}
-      disabled={status.pending}
-      className="mt-2"
-    >
-      Submit
-    </Button>
-  );
-};
 
 const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
   const { formState, onInputChange, onResetForm } = useForm({
     longUrl: "",
   });
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const { longUrl } = formState;
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (longUrl.length <= 2) return;
 
     const isValid = validateUrl(longUrl);
@@ -43,10 +33,12 @@ const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
     }
 
     try {
+      setIsLoading(true);
       const urlData = await createShortUrl(longUrl);
 
       onNewShortUrl(urlData);
 
+      setIsLoading(false);
       onResetForm();
     } catch (error) {
       throw new Error(`Failed to shorten URL: ${error}`);
@@ -54,7 +46,7 @@ const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
   };
 
   return (
-    <form action={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <Input
         placeholder="https://"
         type="text"
@@ -62,7 +54,9 @@ const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
         value={longUrl}
         onChange={onInputChange}
       />
-      <SubmitForm />
+      <Button isLoading={isLoading} disabled={isLoading} className="mt-2">
+        Submit
+      </Button>
     </form>
   );
 };
