@@ -5,9 +5,10 @@ import { validateUrl } from "@/utils/validateUrl";
 import { createShortUrl } from "@/server/actions/createShortUrl";
 
 import { useFormStatus } from "react-dom";
+import { ShortUrlData } from "@/interfaces/ShortUrlData";
 
 interface UrlShortenerFormProps {
-  onNewShortUrl: (shortUrl: any) => void;
+  onNewShortUrl: (urlData: ShortUrlData) => void;
 }
 
 const SubmitForm = () => {
