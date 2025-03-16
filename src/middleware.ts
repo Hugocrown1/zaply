@@ -7,8 +7,6 @@ import { APP_URL } from "@/constants/env";
 
 export async function middleware(req: NextRequest) {
   const shortCode = req.nextUrl.pathname.substring(1);
-
-  console.log({shortCode});
   
 
   if (!shortCode) return NextResponse.redirect(APP_URL); 
