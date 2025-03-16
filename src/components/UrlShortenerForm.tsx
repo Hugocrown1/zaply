@@ -2,19 +2,36 @@ import useForm from "@/hooks/useForm";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { validateUrl } from "@/utils/validateUrl";
-import { createShortUrl } from "@/server/url/createShortUrl";
+import { createShortUrl } from "@/server/actions/createShortUrl";
+
+import { useFormStatus } from "react-dom";
 
 interface UrlShortenerFormProps {
   onNewShortUrl: (shortUrl: any) => void;
 }
 
+const SubmitForm = () => {
+  const status = useFormStatus();
+
+  return (
+    <Button
+      isLoading={status.pending}
+      disabled={status.pending}
+      className="mt-2"
+    >
+      Submit
+    </Button>
+  );
+};
+
 const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
-  const { formState, onInputChange, onResetForm } = useForm({ longUrl: "" });
+  const { formState, onInputChange, onResetForm } = useForm({
+    longUrl: "",
+  });
+
   const { longUrl } = formState;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     if (longUrl.length <= 2) return;
 
     const isValid = validateUrl(longUrl);
@@ -36,14 +53,15 @@ const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={handleSubmit}>
       <Input
+        placeholder="https://"
         type="text"
         name="longUrl"
         value={longUrl}
         onChange={onInputChange}
       />
-      <Button className="mt-2">Submit</Button>
+      <SubmitForm />
     </form>
   );
 };
