@@ -1,8 +1,8 @@
 import useForm from "@/hooks/useForm";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import axios from "axios";
 import { validateUrl } from "@/utils/validateUrl";
+import { createShortUrl } from "@/server/url/createShortUrl";
 
 interface UrlShortenerFormProps {
   onNewShortUrl: (shortUrl: any) => void;
@@ -25,19 +25,14 @@ const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
     }
 
     try {
-      // Call the API to shorten the URL
-      const { data } = await axios.post("/api/short-url", {
-        url: longUrl.trim(),
-      });
+      const urlData = await createShortUrl(longUrl);
 
-      onNewShortUrl(data);
+      onNewShortUrl(urlData);
 
       onResetForm();
     } catch (error) {
       throw new Error(`Failed to shorten URL: ${error}`);
     }
-
-    // Reset the form
   };
 
   return (
