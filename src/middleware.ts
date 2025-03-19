@@ -8,16 +8,16 @@ import { getLongUrl } from "./server/middleware/getLongUrl";
 export async function middleware(req: NextRequest) {
   const shortCode = req.nextUrl.pathname.substring(1);
   
-  if (!shortCode) return NextResponse.redirect(APP_URL); 
+  if (!shortCode) return
 
   const { longUrl, error, message} = await getLongUrl(shortCode);
 
   if(error || !longUrl) {
     console.error(message)
-    return NextResponse.redirect(APP_URL)
+    return NextResponse.redirect('/')
   }
 
-  return NextResponse.redirect(longUrl, 308); 
+  return NextResponse.redirect(new URL(longUrl), 308); 
 }
 
 export const config = {
