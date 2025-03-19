@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { APP_URL } from "@/constants/env";
 import { getLongUrl } from "./server/middleware/getLongUrl";
 
 
