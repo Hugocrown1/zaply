@@ -8,4 +8,5 @@ export interface ShortUrlData {
     short_url?: string
     short_code: string
     user_id: number | null
+    last_click: string | null
 }

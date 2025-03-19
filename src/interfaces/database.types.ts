@@ -16,6 +16,7 @@ export type Database = {
           expiration_date: string | null
           id: number
           is_active: boolean | null
+          last_click: string | null
           long_url: string
           short_code: string
           user_id: number | null
@@ -26,6 +27,7 @@ export type Database = {
           expiration_date?: string | null
           id?: number
           is_active?: boolean | null
+          last_click?: string | null
           long_url: string
           short_code: string
           user_id?: number | null
@@ -36,6 +38,7 @@ export type Database = {
           expiration_date?: string | null
           id?: number
           is_active?: boolean | null
+          last_click?: string | null
           long_url?: string
           short_code?: string
           user_id?: number | null
@@ -88,7 +91,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_click_count: {
+        Args: {
+          url_code: string
+        }
+        Returns: undefined
+      }
+      increment_click_count_and_get_long_url: {
+        Args: {
+          _url_code: string
+        }
+        Returns: {
+          long_url: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
