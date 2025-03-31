@@ -4,8 +4,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --color-background-950: oklch(0.14 0.0044 285.82);
+  --color-background-900: oklch(0.26 0.0018 106.53)
+}
+
 body {
-    @apply p-5
+    @apply text-white bg-background-950;
 }
 
 :root {
