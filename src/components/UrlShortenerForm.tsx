@@ -47,16 +47,18 @@ const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Input
-        placeholder="https://"
-        type="text"
-        name="longUrl"
-        value={longUrl}
-        onChange={onInputChange}
-      />
-      <Button isLoading={isLoading} disabled={isLoading} className="mt-2">
-        Submit
-      </Button>
+      <div className="flex flex-row w-full items-center justify-center space-x-2 max-w-[900px] mx-auto">
+        <Input
+          placeholder="https://"
+          type="text"
+          name="longUrl"
+          value={longUrl}
+          onChange={onInputChange}
+        />
+        <Button isLoading={isLoading} disabled={isLoading}>
+          Short URL
+        </Button>
+      </div>
     </form>
   );
 };
