@@ -6,6 +6,7 @@ import { createShortUrl } from "@/server/actions/createShortUrl";
 
 import { ShortUrlData } from "@/interfaces/ShortUrlData";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface UrlShortenerFormProps {
   onNewShortUrl: (urlData: ShortUrlData) => void;
@@ -28,7 +29,7 @@ const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
     const isValid = validateUrl(longUrl);
 
     if (!isValid) {
-      alert("Invalid URL");
+      toast.error("Please enter a valid URL.");
       return;
     }
 
@@ -41,13 +42,14 @@ const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
       setIsLoading(false);
       onResetForm();
     } catch (error) {
+      setIsLoading(false);
       throw new Error(`Failed to shorten URL: ${error}`);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex flex-row w-full items-center justify-center space-x-2 max-w-[900px] mx-auto">
+      <div className="flex flex-col sm:flex-row w-full items-center justify-center gap-2 max-w-[900px] mx-auto">
         <Input
           placeholder="https://"
           type="text"
@@ -55,7 +57,11 @@ const UrlShortenerForm = ({ onNewShortUrl }: UrlShortenerFormProps) => {
           value={longUrl}
           onChange={onInputChange}
         />
-        <Button isLoading={isLoading} disabled={isLoading}>
+        <Button
+          className="w-full sm:w-fit"
+          isLoading={isLoading}
+          disabled={isLoading}
+        >
           Short URL
         </Button>
       </div>
